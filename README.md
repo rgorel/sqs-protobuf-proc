@@ -4,6 +4,10 @@ The AWS [CDK](https://aws.amazon.com/cdk/) application consisting of three main 
 2. Consumer lambda function written in Python - consumes the message published by the producer function, decodes it from the Protobuf and writes its textual representation into the output
 3. SQS Queue that serves as the communication layer between two functions.
 
+Source code for Ruby app: `lambda/producer/producer.rb`
+Source code for Python app: `lambda/consumer/consumer.py`
+AWS App stack declaration: `lib/app-stack.ts`
+
 ## Prerequisites
 * Docker & Docker Compose
 * AWS Account
