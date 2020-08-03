@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  deploy:
+    build: .
+    volumes:
+      - .:/app
+      - ~/.aws/:/root/.aws
+
+  compile_protobuf:
+    build:
+      context: .
+      dockerfile: Dockerfile.protoc
+    working_dir: /src
+    volumes:
+      - ./lambda:/src
+    command: >
+      protoc -I=. --ruby_out=producer/ --python_out=consumer/ message.proto
+
+  build_ruby:
+    image: lambci/lambda:build-ruby2.7
+    working_dir: /app
+    volumes:
+      - ./lambda/producer:/app
+    command: bundle install
+
+  build_python:
+    image: lambci/lambda:build-python3.8
+    working_dir: /app
+    volumes:
+      - ./lambda/consumer:/app
+    command: >
+      sh -c 'pip install -r requirements.txt --target ./package && cp ./*.py ./package'
