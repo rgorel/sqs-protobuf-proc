@@ -18,6 +18,7 @@ def consume(event, context):
     message = response['Messages'][0]
     parsed_message = _parse(message['Body'])
     print(MessageToDict(parsed_message))
+    print('message priority:', parsed_message.priority)
 
     SQS.delete_message(
         QueueUrl = QUEUE_URL,
